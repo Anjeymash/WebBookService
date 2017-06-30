@@ -4,8 +4,9 @@ import by.htp.library.bean.User;
 
 public class SQLUserDAO implements UserDAO{
 @Override
-public void signIn(String login, String password){
+public User signIn(String login, String password){
 	System.out.println();
+	return null;
 }
 @Override
 public void registration(User user){

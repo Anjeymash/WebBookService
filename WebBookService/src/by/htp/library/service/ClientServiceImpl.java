@@ -6,10 +6,10 @@ import by.htp.library.dao.UserDAO;
 
 public class ClientServiceImpl implements ClientService{
 @Override
-public void singIn(String login, String password){
+public User singIn(String login, String password){
 	DAOFactory daoObjectFactory = DAOFactory.getInstance();
 	UserDAO userDAO = daoObjectFactory.getUserDAO();
-	userDAO.signIn(login, password);
+	return userDAO.signIn(login, password);
 }
 @Override
 public void singOut(String login){

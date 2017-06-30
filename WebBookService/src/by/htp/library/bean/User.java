@@ -6,7 +6,7 @@ public class User {
 	private String name;
 	private int id;
 	
-	public User(String login, String password, String name, int id) {
+	public User(String name, String login, String password,  int id) {
 		super();
 		this.login = login;
 		this.password = password;

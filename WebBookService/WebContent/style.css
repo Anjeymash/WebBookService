@@ -1,0 +1,31 @@
+*{
+margin:0; padding:0;}
+body{ 
+background: url(https://careers.epam.by/content/dam/epam/by/java/677-Java-Landing-Page-R24.png) top center no-repeat;
+
+}
+      #navbar {
+        margin: 0 auto;
+        padding: 0;
+        list-style-type: none;
+        border: 2px solid #0066FF;
+      
+        width: 755px;
+        text-align: center;
+        background-color: #33ADFF;
+      }
+      #navbar li { display: inline; 
+       padding: 5px 10px;}
+      #navbar a {
+        color: #fff;
+        padding: 5px 10px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        width: 100px;
+      }
+      #navbar a:hover {
+      
+        background-color: #0066FF;
+            }
+  

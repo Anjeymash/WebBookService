@@ -7,38 +7,28 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
-
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<ul id="navbar">
+<ul id="navbar">
 		<li><a href="addform.jsp">Add new book</a></li>
 		<li><a href="Controller?command=showallbooks">Delete book</a></li>
 		<li><a href="fndform.jsp">Find book</a></li>
 		<li><a href="Controller?command=singout">Sign out</a></li>
-		</head>
-		</br>
 	</ul>
+</head>
 <body>
+	
 	<ul id="navbar">
-		Books are found:
-		<br />
-
-		<c:forEach var="book" items="${requestScope.listbook}">
-			<form action="Controller" method="get">
-				<input type="hidden" name="command" value="delbook" /> <br /> <br />
-				title:
-				<td><c:out value="${book.name} " /></td> <br /> author:
-				<td><c:out value="${book.author} " /></td> <br /> published in:
-				<td><c:out value="${book.age} " /></td> <br /> ID:
-				<td><c:out value="${book.id} " /></td> <input type="hidden"
-					name="bookID" value="${book.id}" /> 
-					<img src="Images/${book.id}.jpg" alt="book for view">
-			</form>
-		</c:forEach>
-		<br />
-
-
-	</ul>
+		<c:if test="${not empty requestScope.Messege}">
+				<c:out value="${requestScope.Messege}" />
+			</c:if>
+			<br/>
+		Hello, <br/>
+			<li><a><c:out value="${requestScope.userName} " /> </a></li><br /> 
+			
+					
+		</ul>
+		
 </body>
 </html>

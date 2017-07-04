@@ -5,13 +5,23 @@ public class User {
 	private String password;
 	private String name;
 	private int id;
+	private String role;
 	
-	public User(String name, String login, String password,  int id) {
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public User(String name, String login, String password,  int id, String role) {
 		super();
 		this.login = login;
 		this.password = password;
 		this.name = name;
 		this.id = id;
+		this.role = role;
 	}
 
 	@Override

@@ -69,16 +69,16 @@ public final class ConnectionPool {
 
 	public void closeConnection(Connection con, Statement st, ResultSet rs) {
 		try {
-			con.close();
+			rs.close();
 		} catch (SQLException e) {
 		}
 		try {
-			rs.close();
+			st.close();
 		} catch (SQLException e) {
 			// logger.log(Level.ERROR, "ResultSet isn't closed.");
 		}
 		try {
-			st.close();
+			con.close();
 		} catch (SQLException e) {
 			// logger.log(Level.ERROR, "Statement isn't closed.");
 		}
@@ -86,12 +86,12 @@ public final class ConnectionPool {
 
 	public void closeConnection(Connection con, Statement st) {
 		try {
-			con.close();
+			st.close();
 		} catch (SQLException e) {
 			// logger.log(Level.ERROR, "Connection isn't return to the pool.");
 		}
 		try {
-			st.close();
+			con.close();
 		} catch (SQLException e) {
 			// logger.log(Level.ERROR, "Statement isn't closed.");
 		}

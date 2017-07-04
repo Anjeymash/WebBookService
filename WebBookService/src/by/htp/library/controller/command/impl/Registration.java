@@ -6,10 +6,12 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import by.htp.library.bean.User;
 import by.htp.library.controller.Command;
 import by.htp.library.service.ClientService;
+import by.htp.library.service.ServiceException;
 import by.htp.library.service.ServiceFactory;
 
 public class Registration implements Command {
@@ -18,29 +20,34 @@ public class Registration implements Command {
 		String login;
 		String password;
 		String name;
+		String page;
 
-		login = request.getParameter("login");
-		password = request.getParameter("password");
-		name = request.getParameter("name");
-	
-User user = new User(name, login, password, 0);
+		HttpSession session = request.getSession();
+
+		login = request.getParameter("userLogin");
+		password = request.getParameter("userPassword");
+		name = request.getParameter("userName");
+		System.out.println(name);
+
+		User user = new User(name, login, password, 0, "u");
 		ServiceFactory factory = ServiceFactory.getInstance();
 		ClientService clientService = factory.getClientService();
-		clientService.registration(user);
-
-		String page;
-		if ((name != null)&&(login != null)&&(password != null)) {
-			request.setAttribute("user", user);
+		try {
+			clientService.registration(user);
+			request.setAttribute("userName", name);
 			page = "WEB-INF/jsp/main.jsp";
-		} else {
-			page = "index.jsp";
-			request.setAttribute("errorMessage", "wrong login or password");
+
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			page = "registration.jsp";
+			request.setAttribute("errorMessage", "such a user is already exist");
 		}
+		session.setAttribute("id", user.getId());
+		session.setAttribute("role", user.getRole());
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 		dispatcher.forward(request, response);
-	
-	}
-	}
 
-
+	}
+}

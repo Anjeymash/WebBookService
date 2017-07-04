@@ -31,9 +31,11 @@
 				<td><c:out value="${book.name} " /></td> <br /> author:
 				<td><c:out value="${book.author} " /></td> <br /> published in:
 				<td><c:out value="${book.age} " /></td> <br /> ID:
-				<td><c:out value="${book.id} " /></td> <input type="hidden"
-					name="bookID" value="${book.id}" /> 
-					<img src="Images/${book.id}.jpg" alt="book for view">
+				<td><c:out value="${book.id} " /></td> <br />
+				<img src="Images/${book.id}.jpg" alt="book for view">
+				<input type="hidden"
+					name="bookID" value="${book.id}" /> <input type="submit"
+					value="Delete book" />
 			</form>
 		</c:forEach>
 		<br />

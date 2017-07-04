@@ -8,16 +8,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="style.css">
-    
+
 </head>
 <body>
 
 
+	
 	<ul id="navbar">
-		<li><a href="addform.jsp">Add new book</a></li>
-		<li><a href="Controller?command=showallbooks">Delete book</a></li>
-		<li><a href="fndform.jsp">Find book</a></li>
+		<li><a href="registration.jsp">Registration</a></li>
+		<li><a href="singin.jsp">Sign in</a></li>
 	</ul>
-
 </body>
 </html>

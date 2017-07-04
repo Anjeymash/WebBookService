@@ -1,16 +1,13 @@
 package by.htp.library.controller.command.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 import by.htp.library.bean.Book;
 import by.htp.library.controller.Command;
-//import by.htp.library.dao.DAOException;
 import by.htp.library.service.LibraryService;
 import by.htp.library.service.ServiceException;
 import by.htp.library.service.ServiceFactory;
@@ -22,25 +19,28 @@ public class DelBook implements Command {
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		LibraryService libraryService = serviceFactory.getLibraryService();
 		int bookID = 0;
+		int id;
+		String role;
 		Book book;
-		
-		//bookID = Integer.parseInt(request.getParameter("bookID"));
-		System.out.println(request.getParameter("bookID"));
+		HttpSession session = request.getSession();
+		id = (Integer) session.getAttribute("id");
+		role = (String) session.getAttribute("role");
+		// System.out.println(id);
+		// System.out.println(request.getParameter("bookID"));
 		bookID = Integer.parseInt(request.getParameter("bookID"));
 		String page;
-		
-
 		try {
-			book = libraryService.delBook(bookID);
-			//System.out.println(book.getName());
-			request.setAttribute("book", book);
-			
-			response.sendRedirect("Controller?command=show&Messege=book is deleted&bookName=" + book.getName()
-			+ "&bookAuthor=" + book.getAuthor() + "&bookYear=" + book.getAge());
-
-			//request.setAttribute("Messege", "book is deleted");
-			
-			//page = "show.jsp";
+			if (role.equals("admin")) {
+				book = libraryService.delBook(bookID);
+				// System.out.println(book.getName());
+				request.setAttribute("book", book);
+				response.sendRedirect("Controller?command=show&Messege=book is deleted&bookName=" + book.getName()
+						+ "&bookAuthor=" + book.getAuthor() + "&bookYear=" + book.getAge());
+			} else {
+				request.setAttribute("errorMessage", "you have no rights for this operation");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("delform.jsp");
+				dispatcher.forward(request, response);
+			}
 
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
@@ -50,8 +50,6 @@ public class DelBook implements Command {
 			RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 			dispatcher.forward(request, response);
 		}
-		
-		
 
 	}
 }

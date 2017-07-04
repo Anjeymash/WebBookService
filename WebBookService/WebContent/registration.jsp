@@ -9,20 +9,14 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<ul id="navbar">
-		<li><a href="addform.jsp">Add new book</a></li>
-		<li><a href="Controller?command=showallbooks">Delete book</a></li>
-		<li><a href="fndform.jsp">Find book</a></li>
-		<li><a href="Controller?command=singout">Sign out</a></li>
-		</ul>
-		<ul id="navbar">	
+	<ul id="navbar">	
 	<form action="Controller" method="get">
 	
-		<input type="hidden" name="command" value="addbook" /> Book:<br />
-		 <input	type="text" name="bookName" value="" /><br /> Author:<br /> 
-		 <input	type="text" name="bookAuthor" value="" /><br /> Year:<br /> 
-		 <input	type="text" name="bookYear" value="" /><br /> 
-		 <input type="submit" value="add book" />
+		<input type="hidden" name="command" value="registration" /> Enter your name:<br />
+		 <input	type="text" name="userName" value="" /><br /> Enter your login:<br /> 
+		 <input	type="text" name="userLogin" value="" /><br /> Enter your password:<br /> 
+		 <input	type="text" name="userPassword" value="" /><br /> 
+		 <input type="submit" value="add user" />
 	
 	</form>
 

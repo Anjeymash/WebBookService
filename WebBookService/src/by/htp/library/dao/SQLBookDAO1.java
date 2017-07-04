@@ -1,24 +1,23 @@
 package by.htp.library.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.RowId;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import by.htp.library.bean.Book;
 import by.htp.library.dao.BookDAO;
 import by.htp.library.dao.SQLPool.ConnectionPool;
-import by.htp.library.dao.SQLPool.DBResourceManager;
 import by.htp.library.dao.SQLPoolException.ConnectionPoolException;
 
 public class SQLBookDAO1 implements BookDAO {
+	private final static String SEL_MAX_ID = "select * from books where ID = (select max(ID) from books)";
+	private final static String INS_BOOK = "INSERT INTO books (name, author, age, ID, status) VALUES (?, ?, ?, ?, ?)";
+	private final static String SEL_ACT_BOOK =	"SELECT * FROM books WHERE status = 'active'";
+	private final static String SEL_BY_ID = "SELECT * FROM books WHERE (ID=?)";
+	
 	ConnectionPool conPool = ConnectionPool.getInstance();
-
-	SQLBookDAO1() {
-	}
 
 	@Override
 	public void addBook(Book book) throws DAOException {
@@ -35,7 +34,7 @@ public class SQLBookDAO1 implements BookDAO {
 		}
 		try {
 			st = con.createStatement();
-			rs = st.executeQuery("select * from books where ID = (select max(ID) from books)");
+			rs = st.executeQuery(SEL_MAX_ID);
 			while (rs.next()) {
 				maxId = rs.getInt("ID");
 				maxId++;
@@ -43,12 +42,12 @@ public class SQLBookDAO1 implements BookDAO {
 			book.setId((maxId));
 			System.out.println("id " + book.getId());
 
-			String sq = "INSERT INTO books (name, author, age, ID) VALUES (?, ?, ?, ?)";
-			ps = con.prepareStatement(sq);
+			ps = con.prepareStatement(INS_BOOK);
 			ps.setString(1, book.getName());
 			ps.setString(2, book.getAuthor());
 			ps.setString(3, book.getAge());
 			ps.setInt(4, book.getId());
+			ps.setString(5, "active");
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -73,20 +72,17 @@ public class SQLBookDAO1 implements BookDAO {
 		}
 		try {
 			st = con.createStatement();
-			rs = st.executeQuery("SELECT * FROM books");
-			if (name.equals("findAllBooks"))
+			rs = st.executeQuery(SEL_ACT_BOOK);
+			if (name.equals("findAllBooks")) {
 				while (rs.next()) {
-					if (rs.getInt(4) != 0)
-						foundbooks.add(new Book(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
+					foundbooks.add(
+							new Book(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)));
 				}
-			// for(int i = 0; i< foundbooks.size(); i++){
-			// System.out.println(foundbooks.get(i).getName());
-			// }
-
+			}
 			while (rs.next()) {
-
 				if (rs.getString(1).equals(name))
-					foundbooks.add(new Book(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
+					foundbooks.add(
+							new Book(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -95,9 +91,7 @@ public class SQLBookDAO1 implements BookDAO {
 		} finally {
 			conPool.closeConnection(con, st, rs);
 		}
-		if (foundbooks.isEmpty()) {
-			throw new DAOException("such a book does not exist");
-		}
+
 		return foundbooks;
 	}
 
@@ -121,11 +115,11 @@ public class SQLBookDAO1 implements BookDAO {
 		}
 		try {
 			// System.out.println(id);
-			ps = con.prepareStatement("SELECT * FROM books WHERE (ID=?)");
+			ps = con.prepareStatement(SEL_BY_ID);
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				book = new Book(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+				book = new Book(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5));
 				System.out
 						.println(rs.getString(1) + rs.getString(1) + rs.getString(2) + rs.getString(3) + rs.getInt(4));
 
@@ -133,7 +127,7 @@ public class SQLBookDAO1 implements BookDAO {
 				throw new DAOException("no such a book");
 			}
 			st = con.createStatement();
-			st.executeUpdate("UPDATE books SET ID = 0 WHERE ID=+" + id + "");
+			st.executeUpdate("UPDATE books SET status = 'deleted' WHERE ID=+" + id + "");
 
 		} catch (SQLException e) {
 			e.printStackTrace();

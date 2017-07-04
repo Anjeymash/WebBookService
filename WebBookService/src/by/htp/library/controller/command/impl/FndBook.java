@@ -22,12 +22,12 @@ public class FndBook implements Command {
 		String page;
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		LibraryService libraryService = serviceFactory.getLibraryService();
-
 		bookName = request.getParameter("bookName");
 		//System.out.println(bookName);
 
 		try {
 			foundBooks = libraryService.fndBook(bookName);
+			if (foundBooks.isEmpty()) throw new ServiceException("books are not found");
 			request.setAttribute("listbook", foundBooks);
 			page = "WEB-INF/jsp/showBooks.jsp";
 		} catch (ServiceException e) {

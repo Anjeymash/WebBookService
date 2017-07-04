@@ -14,6 +14,7 @@
 		<li><a href="addform.jsp">Add new book</a></li>
 		<li><a href="Controller?command=showallbooks">Delete book</a></li>
 		<li><a href="fndform.jsp">Find book</a></li>
+		<li><a href="Controller?command=singout">Sign out</a></li>
 	</ul>
 <body>
 

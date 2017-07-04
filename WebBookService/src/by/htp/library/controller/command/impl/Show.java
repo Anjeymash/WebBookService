@@ -16,11 +16,9 @@ import by.htp.library.service.ServiceFactory;
 
 public class Show implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		// String response = null;
-		//ServiceFactory serviceFactory = ServiceFactory.getInstance();
-		//LibraryService libraryService = serviceFactory.getLibraryService();
-
+		// ServiceFactory serviceFactory = ServiceFactory.getInstance();
+		// LibraryService libraryService = serviceFactory.getLibraryService();
 		String bookName = null;
 		String bookAuthor = null;
 		String bookYear = null;
@@ -31,14 +29,9 @@ public class Show implements Command {
 		bookYear = request.getParameter("bookYear");
 		String page;
 		Book book = new Book(bookName, bookAuthor, bookYear);
-
-		
-			
-			request.setAttribute("book", book);
-			request.setAttribute("Messege", mess);
-			page = "show.jsp";
-	
-		
+		request.setAttribute("book", book);
+		request.setAttribute("Messege", mess);
+		page = "show.jsp";
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 		dispatcher.forward(request, response);

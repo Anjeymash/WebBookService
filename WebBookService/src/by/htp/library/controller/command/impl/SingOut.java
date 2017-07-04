@@ -6,21 +6,19 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import by.htp.library.controller.Command;
 
-public class WrongRequest implements Command {
-	String response;
+public class SingOut implements Command {
 
-	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		// TODO Auto-generated method stub
-		String page = "main.jsp";
-		// request.setAttribute("errorMessage", "wrong input");
-
+		HttpSession session = request.getSession();
+		session.invalidate();
+		String page = "index.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 		dispatcher.forward(request, response);
-	}
 
+	}
 }

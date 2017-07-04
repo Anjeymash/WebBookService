@@ -17,25 +17,36 @@ import by.htp.library.service.ServiceFactory;
 public class AddBook implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		// String response = null;
 		ServiceFactory serviceFactory = ServiceFactory.getInstance();
 		LibraryService libraryService = serviceFactory.getLibraryService();
 
 		String bookName = null;
 		String bookAuthor = null;
 		String bookYear = null;
+		String role = null;
+		int id;
 
+		HttpSession session = request.getSession();
+		id = (Integer) session.getAttribute("id");
+		role = (String) session.getAttribute("role");
+		System.out.println("\n" + role);
 		bookName = request.getParameter("bookName");
 		bookAuthor = request.getParameter("bookAuthor");
 		bookYear = request.getParameter("bookYear");
 		Book book = new Book(bookName, bookAuthor, bookYear);
 
 		try {
-			libraryService.addNewBook(book);
-			request.setAttribute("book", book);
-			System.out.println(bookName + " is added");
-			response.sendRedirect("Controller?command=show&Messege=book is added&bookName=" + book.getName()
-					+ "&bookAuthor=" + book.getAuthor() + "&bookYear=" + book.getAge());
+			if (role.equals("admin")) {
+				libraryService.addNewBook(book);
+				request.setAttribute("book", book);
+				System.out.println(bookName + " is added");
+				response.sendRedirect("Controller?command=show&Messege=book is added&bookName=" + book.getName()
+						+ "&bookAuthor=" + book.getAuthor() + "&bookYear=" + book.getAge());
+			} else {
+				request.setAttribute("errorMessage", "you have no rights for this operation");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("addform.jsp");
+				dispatcher.forward(request, response);
+			}
 
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
@@ -43,9 +54,6 @@ public class AddBook implements Command {
 			request.setAttribute("errorMessage", "wrong input, try once more");
 			RequestDispatcher dispatcher = request.getRequestDispatcher("addform.jsp");
 			dispatcher.forward(request, response);
-
-
 		}
-
 	}
 }

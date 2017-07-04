@@ -6,6 +6,7 @@ public class Book {
 	private String author;
 	private String age;
 	private int id;
+	private String status;
 
 	public int getId() {
 		return id;
@@ -21,12 +22,21 @@ public class Book {
 		this.age = age;
 	}
 
-	public Book(String name, String author, String age, int id) {
+	public Book(String name, String author, String age, int id, String status) {
 		this.name = name;
 		this.author = author;
 		this.age = age;
 		this.id = id;
+		this.status = status;
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override
